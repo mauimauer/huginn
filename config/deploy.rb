@@ -1,7 +1,7 @@
 default_run_options[:pty] = true
 
 set :application, "huginn"
-set :deploy_to, "/home/you/app"
+set :deploy_to, ENV['OPENSHIFT_REPO_DIR'] + "/app"
 set :user, "you"
 set :use_sudo, false
 set :scm, :git
@@ -14,7 +14,7 @@ set :keep_releases, 5
 set :bundle_without, [:development]
 set :unicorn_pid, "#{shared_path}/pids/unicorn.pid"
 
-server "yourdomain.com", :app, :delayed_job, :web, :db, :primary => true
+server ENV['OPENSHIFT_GEAR_DNS'], :app, :delayed_job, :web, :db, :primary => true
 
 set :delayed_job_server_role, :delayed_job
 
