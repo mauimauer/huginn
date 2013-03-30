@@ -32,7 +32,7 @@ Huginn::Application.configure do
   # Expands the lines which load the assets
   config.assets.debug = true
 
-  DOMAIN = "localhost:3000"
+  DOMAIN = ENV['OPENSHIFT_GEAR_DNS']
 
   config.action_mailer.default_url_options = { :host => DOMAIN }
   config.action_mailer.asset_host = DOMAIN
