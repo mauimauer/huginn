@@ -64,11 +64,18 @@ Huginn::Application.configure do
   # with SQLite, MySQL, and PostgreSQL)
   # config.active_record.auto_explain_threshold_in_seconds = 0.5
 
+<<<<<<< HEAD
   config.action_mailer.default_url_options = { :host => ENV['DOMAIN'] }
   config.action_mailer.asset_host = ENV['DOMAIN']
   if ENV['ASSET_HOST']
     config.action_mailer.asset_host = ENV['ASSET_HOST']
   end
+=======
+  DOMAIN = ENV['OPENSHIFT_GEAR_DNS']
+
+  config.action_mailer.default_url_options = { :host => DOMAIN }
+  config.action_mailer.asset_host = DOMAIN
+>>>>>>> use $OPENSHIFT_GEAR_DNS for DOMAIN
   config.action_mailer.perform_deliveries = true
   config.action_mailer.raise_delivery_errors = true
   config.action_mailer.delivery_method = :smtp
