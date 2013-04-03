@@ -3,6 +3,7 @@ source 'https://rubygems.org'
 gem 'rails'
 gem 'mysql2'
 gem 'devise'
+gem 'safe_yaml', '0.8.6' # Required by rails_admin at the moment.
 gem 'rails_admin'
 gem 'kaminari'
 gem 'bootstrap-kaminari-views'
@@ -14,6 +15,8 @@ gem 'delayed_job', :git => 'https://github.com/wok/delayed_job' # Until the YAML
 gem 'delayed_job_active_record', "~> 0.3.3" # newer was giving a strange MySQL error
 gem "daemons"
 # gem "delayed_job_web"
+
+gem 'foreman'
 
 group :assets do
   gem 'sass-rails',   '~> 3.2.3'
@@ -38,14 +41,7 @@ platforms :ruby_18 do
   gem 'fastercsv'
 end
 
-group :production do
-  gem 'unicorn'
-end
-
 group :development do
-  gem 'capistrano'
-  gem 'capistrano-unicorn', :require => false
-  gem 'rvm-capistrano'
   gem 'pry'
 end
 
