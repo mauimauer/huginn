@@ -23,6 +23,21 @@ while [ $RETRY -gt 0 ] ; do
         . $env_var
     done
 
+    #set huginn env vars
+    export DOMAIN=$OPENSHIFT_APP_DNS
+
+    #database
+    export DATABASE_ADAPTER=mysql2
+    export DATABASE_ENCODING=utf8
+    export DATABASE_RECONNECT=true
+    export DATABASE_NAME=$OPENSHIFT_APP_NAME
+    export DATABASE_POOL=5
+    export DATABASE_USERNAME=$OPENSHIFT_MYSQL_DB_USERNAME
+    export DATABASE_PASSWORD=$OPENSHIFT_MYSQL_DB_PASSWORD
+    export DATABASE_HOST=$OPENSHIFT_MYSQL_DB_HOST
+    export DATABASE_PORT=$OPENSHIFT_MYSQL_DB_PORT
+    export DATABASE_SOCKET=$OPENSHIFT_MYSQL_DB_SOCKET
+
     #check for db
     if [ -n "$OPENSHIFT_MYSQL_DB_HOST" ]
     then
