@@ -20,3 +20,6 @@ else
   echo "  Restoring stored assets"
   ln -s "${STORED_ASSETS}" "${LIVE_ASSETS}"
 fi
+
+# now slurp in the variables the asset precompile is looking for
+source ${OPENSHIFT_REPO_DIR}/.env.openshift
