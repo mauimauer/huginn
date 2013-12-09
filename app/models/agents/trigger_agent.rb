@@ -2,7 +2,7 @@ module Agents
   class TriggerAgent < Agent
     cannot_be_scheduled!
 
-    VALID_COMPARISON_TYPES = %w[regex field<value field<=value field==value field>=value field>value]
+    VALID_COMPARISON_TYPES = %w[regex !regex field<value field<=value field==value field!=value field>=value field>value]
 
     description <<-MD
       Use a TriggerAgent to watch for a specific value in an Event payload.
@@ -19,7 +19,7 @@ module Agents
     event_description <<-MD
       Events look like this:
 
-          { :message => "Your message" }
+          { "message": "Your message" }
     MD
 
     def validate_options
@@ -42,7 +42,7 @@ module Agents
     end
 
     def working?
-      last_receive_at && last_receive_at > options[:expected_receive_period_in_days].to_i.days.ago
+      last_receive_at && last_receive_at > options[:expected_receive_period_in_days].to_i.days.ago && !recent_error_logs?
     end
 
     def receive(incoming_events)
@@ -52,6 +52,8 @@ module Agents
           case rule[:type]
             when "regex"
               value_at_path.to_s =~ Regexp.new(rule[:value], Regexp::IGNORECASE)
+            when "!regex"
+              value_at_path.to_s !~ Regexp.new(rule[:value], Regexp::IGNORECASE)
             when "field>value"
               value_at_path.to_f > rule[:value].to_f
             when "field>=value"
@@ -62,6 +64,8 @@ module Agents
               value_at_path.to_f <= rule[:value].to_f
             when "field==value"
               value_at_path.to_s == rule[:value].to_s
+            when "field!=value"
+              value_at_path.to_s != rule[:value].to_s
             else
               raise "Invalid :type of #{rule[:type]} in TriggerAgent##{id}"
           end

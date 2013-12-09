@@ -11,7 +11,17 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130126080736) do
+ActiveRecord::Schema.define(:version => 20131105063248) do
+
+  create_table "agent_logs", :force => true do |t|
+    t.integer  "agent_id",                         :null => false
+    t.text     "message",                          :null => false
+    t.integer  "level",             :default => 3, :null => false
+    t.integer  "inbound_event_id"
+    t.integer  "outbound_event_id"
+    t.datetime "created_at",                       :null => false
+    t.datetime "updated_at",                       :null => false
+  end
 
   create_table "agents", :force => true do |t|
     t.integer  "user_id"
@@ -26,6 +36,7 @@ ActiveRecord::Schema.define(:version => 20130126080736) do
     t.datetime "created_at",                                  :null => false
     t.datetime "updated_at",                                  :null => false
     t.text     "memory",                :limit => 2147483647
+    t.datetime "last_webhook_at"
   end
 
   add_index "agents", ["schedule"], :name => "index_agents_on_schedule"
@@ -56,9 +67,11 @@ ActiveRecord::Schema.define(:version => 20130126080736) do
     t.text     "payload",    :limit => 16777215
     t.datetime "created_at",                                                     :null => false
     t.datetime "updated_at",                                                     :null => false
+    t.datetime "expires_at"
   end
 
   add_index "events", ["agent_id", "created_at"], :name => "index_events_on_agent_id_and_created_at"
+  add_index "events", ["expires_at"], :name => "index_events_on_expires_at"
   add_index "events", ["user_id", "created_at"], :name => "index_events_on_user_id_and_created_at"
 
   create_table "links", :force => true do |t|

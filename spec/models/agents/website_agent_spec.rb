@@ -35,11 +35,28 @@ describe Agents::WebsiteAgent do
     end
 
     it "should log an error if the number of results for a set of extraction patterns differs" do
-      lambda {
-        @site[:extract][:url][:css] = "div"
-        @checker.options = @site
-        @checker.check
-      }.should raise_error(StandardError, /Got an uneven number of matches/)
+      @site[:extract][:url][:css] = "div"
+      @checker.options = @site
+      @checker.check
+      @checker.logs.first.message.should =~ /Got an uneven number of matches/
+    end
+  end
+
+  describe '#working?' do
+    it 'checks if events have been received within the expected receive period' do
+      @checker.should_not be_working # No events created
+      @checker.check
+      @checker.reload.should be_working # Just created events
+
+      @checker.error "oh no!"
+      @checker.reload.should_not be_working # The most recent log is an error
+
+      @checker.log "ok now"
+      @checker.reload.should be_working # The most recent log is no longer an error
+
+      two_days_from_now = 2.days.from_now
+      stub(Time).now { two_days_from_now }
+      @checker.reload.should_not be_working # Two days have passed without a new event having been created
     end
   end
 
@@ -137,6 +154,31 @@ describe Agents::WebsiteAgent do
         event = Event.all[-2]
         event.payload[:version].should == 2
         event.payload[:title].should == "first"
+      end
+
+      it "stores the whole object if :extract is not specified" do
+        json = {
+            :response => {
+                :version => 2,
+                :title => "hello!"
+            }
+        }
+        stub_request(:any, /json-site/).to_return(:body => json.to_json, :status => 200)
+        site = {
+            :name => "Some JSON Response",
+            :expected_update_period_in_days => 2,
+            :type => "json",
+            :url => "http://json-site.com",
+            :mode => :on_change
+        }
+        checker = Agents::WebsiteAgent.new(:name => "Weather Site", :options => site)
+        checker.user = users(:bob)
+        checker.save!
+
+        checker.check
+        event = Event.last
+        event.payload[:response][:version].should == 2
+        event.payload[:response][:title].should == "hello!"
       end
     end
   end

@@ -15,7 +15,7 @@ Huginn is a system for building agents that perform automated tasks for you onli
 * Scrape websites and receive emails when they change
 * Track your location over time
 
-Follow [@tectonic](https://twitter.com/tectonic) for updates as Huginn evolves.
+Follow [@tectonic](https://twitter.com/tectonic) for updates as Huginn evolves, and join us in \#huginn on Freenode IRC to discuss the project.
 
 ## Examples
 
@@ -53,7 +53,7 @@ If you need more detailed instructions, see the [Novice setup guide][novice-setu
 
 Follow these instructions if you wish to deploy your own version of Huginn or contribute back to the project.  GitHub doesn't make it easy to work with private forks of public repositories, so I recommend that you follow the following steps:
 
-* Make a public fork of Huginn
+* Make a public fork of Huginn. If you can't create private Github repositories, you can skip the steps below. Just follow the *Quick Start* steps above and make pull requests when you want to contribute a patch. 
 * Make a private, empty GitHub repository called `huginn-private`
 * Duplicate your public fork into your new private repository (via [GitHub's instructions](https://help.github.com/articles/duplicating-a-repository)):
 
@@ -104,4 +104,8 @@ Huginn is a work in progress and is hopefully just getting started.  Please get 
 
 Please fork, add specs, and send pull requests!
 
-[![Build Status](https://travis-ci.org/cantino/huginn.png)](https://travis-ci.org/cantino/huginn)
+[![Build Status](https://travis-ci.org/cantino/huginn.png)](https://travis-ci.org/cantino/huginn) [![Code Climate](https://codeclimate.com/github/cantino/huginn.png)](https://codeclimate.com/github/cantino/huginn)
+
+
+[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/cantino/huginn/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
+
