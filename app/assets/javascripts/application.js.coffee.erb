@@ -27,12 +27,20 @@ showSchedule = ->
 
 hideLinks = ->
   $(".link-region .select2-container").hide()
+  $(".link-region .propagate-immediately").hide()
   $(".link-region .cannot-receive-events").show()
 
 showLinks = ->
   $(".link-region .select2-container").show()
+  $(".link-region .propagate-immediately").show()
   $(".link-region .cannot-receive-events").hide()
   showEventDescriptions()
+
+hideEventCreation = ->
+  $(".event-related-region").hide()
+
+showEventCreation = ->
+  $(".event-related-region").show()
 
 showEventDescriptions = ->
   if $("#agent_source_ids").val()
@@ -102,6 +110,7 @@ $(document).ready ->
       $("#logs .refresh, #logs .clear").hide()
       $.post "/agents/#{agentId}/logs/clear", { "_method": "DELETE" }, (html) =>
         $("#logs .logs").html html
+        $("#show-tabs li a.recent-errors").removeClass 'recent-errors'
         $("#logs .spinner").stop(true, true).fadeOut ->
           $("#logs .refresh, #logs .clear").show()
 
@@ -131,6 +140,11 @@ $(document).ready ->
         else
           hideLinks()
 
+        if json.can_create_events
+          showEventCreation()
+        else
+          hideEventCreation()
+
         $(".description").html(json.description_html) if json.description_html?
 
         if $("#agent_options").hasClass("showing-default") || $("#agent_options").val().match(/\A\s*(\{\s*\}|)\s*\Z/g)
@@ -152,3 +166,9 @@ $(document).ready ->
       showLinks()
     else
       hideLinks()
+
+  if $(".event-related-region")
+    if $(".event-related-region").data("can-create-events") == true
+      showEventCreation()
+    else
+      hideEventCreation()

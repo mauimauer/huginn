@@ -9,7 +9,13 @@ module Agents
     description <<-MD
       The TwitterUserAgent follows the timeline of a specified Twitter user.
 
-      You [must set up a Twitter app](https://github.com/cantino/huginn/wiki/Getting-a-twitter-oauth-token) and provide it's `consumer_key`, `consumer_secret`, `oauth_token` and `oauth_token_secret`, (Also shown as "Access token" on the Twitter developer's site.) along with the `username` of the Twitter user to monitor.
+      Twitter credentials must be supplied as either [credentials](/user_credentials) called
+      `twitter_consumer_key`, `twitter_consumer_secret`, `twitter_oauth_token`, and `twitter_oauth_token_secret`,
+      or as options to this Agent called `consumer_key`, `consumer_secret`, `oauth_token`, and `oauth_token_secret`.
+
+      To get oAuth credentials for Twitter, [follow these instructions](https://github.com/cantino/huginn/wiki/Getting-a-twitter-oauth-token).
+
+      You must also provide the `username` of the Twitter user to monitor.
 
       Set `expected_update_period_in_days` to the maximum amount of time that you'd expect to pass between Events being created by this Agent.
     MD
@@ -41,36 +47,32 @@ module Agents
     default_schedule "every_1h"
 
     def validate_options
-      unless options[:username].present? &&
-        options[:expected_update_period_in_days].present?
+      unless options['username'].present? &&
+        options['expected_update_period_in_days'].present?
         errors.add(:base, "username and expected_update_period_in_days are required")
       end      
     end
 
     def working?
-      event_created_within(options[:expected_update_period_in_days]) && !recent_error_logs?
+      event_created_within?(options['expected_update_period_in_days']) && !recent_error_logs?
     end
 
     def default_options
       {
-          :username => "tectonic",
-          :expected_update_period_in_days => "2",
-          :consumer_key => "---",
-          :consumer_secret => "---",
-          :oauth_token => "---",
-          :oauth_token_secret => "---"
+        'username' => "tectonic",
+        'expected_update_period_in_days' => "2"
       }
     end
 
     def check
-      since_id = memory[:since_id] || nil
+      since_id = memory['since_id'] || nil
       opts = {:count => 200, :include_rts => true, :exclude_replies => false, :include_entities => true, :contributor_details => true}
       opts.merge! :since_id => since_id unless since_id.nil?
 
-      tweets = Twitter.user_timeline(options[:username], opts)
+      tweets = twitter.user_timeline(options['username'], opts)
 
       tweets.each do |tweet|
-        memory[:since_id] = tweet.id if !memory[:since_id] || (tweet.id > memory[:since_id])
+        memory['since_id'] = tweet.id if !memory['since_id'] || (tweet.id > memory['since_id'])
 
         create_event :payload => tweet.attrs
       end

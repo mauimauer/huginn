@@ -1,5 +1,9 @@
 #!/usr/bin/env ruby
 
+# This process is used by TwitterStreamAgents to watch the Twitter stream in real time.  It periodically checks for
+# new or changed TwitterStreamAgents and starts to follow the stream for them.  It is typically run by foreman via
+# the included Procfile.
+
 unless defined?(Rails)
   puts
   puts "Please run me with rails runner, for example:"
@@ -14,16 +18,16 @@ require 'twitter/json_stream'
 require 'em-http-request'
 require 'pp'
 
-def stream!(filters, options = {}, &block)
+def stream!(filters, agent, &block)
   stream = Twitter::JSONStream.connect(
     :path    => "/1/statuses/#{(filters && filters.length > 0) ? 'filter' : 'sample'}.json#{"?track=#{filters.map {|f| CGI::escape(f) }.join(",")}" if filters && filters.length > 0}",
+    :ssl     => true,
     :oauth   => {
-      :consumer_key    => options[:consumer_key],
-      :consumer_secret => options[:consumer_secret],
-      :access_key      => options[:oauth_token] || options[:access_key],
-      :access_secret   => options[:oauth_token_secret] || options[:access_secret]
-    },
-    :ssl     => true
+      :consumer_key    => agent.twitter_consumer_key,
+      :consumer_secret => agent.twitter_consumer_secret,
+      :access_key      => agent.twitter_oauth_token,
+      :access_secret   => agent.twitter_oauth_token_secret
+    }
   )
 
   stream.each_item do |status|
@@ -51,7 +55,7 @@ def stream!(filters, options = {}, &block)
 end
 
 def load_and_run(agents)
-  agents.group_by { |agent| agent.options[:twitter_username] }.each do |twitter_username, agents|
+  agents.group_by { |agent| agent.twitter_oauth_token }.each do |oauth_token, agents|
     filter_to_agent_map = agents.map { |agent| agent.options[:filters] }.flatten.uniq.compact.map(&:strip).inject({}) { |m, f| m[f] = []; m }
 
     agents.each do |agent|
@@ -60,11 +64,9 @@ def load_and_run(agents)
       end
     end
 
-    options = agents.first.options.slice(:consumer_key, :consumer_secret, :access_key, :oauth_token, :access_secret, :oauth_token_secret)
-
     recent_tweets = []
 
-    stream!(filter_to_agent_map.keys, options) do |status|
+    stream!(filter_to_agent_map.keys, agents.first) do |status|
       if status["retweeted_status"].present? && status["retweeted_status"].is_a?(Hash)
         puts "Skipping retweet: #{status["text"]}"
       elsif recent_tweets.include?(status["id_str"])
@@ -111,7 +113,7 @@ while true
     end
 
     print "Pausing..."; STDOUT.flush
-    sleep 5
+    sleep 1
     puts "done."
   rescue SignalException, SystemExit
     EventMachine::stop_event_loop if EventMachine.reactor_running?

@@ -13,9 +13,10 @@ gem "rufus-scheduler", :require => false
 gem 'json', '>= 1.7.7'
 gem 'jsonpath'
 gem 'twilio-ruby'
+gem 'ruby-growl'
 
-gem 'delayed_job', :git => 'https://github.com/wok/delayed_job' # Until the YAML issues are fixed in master.
-gem 'delayed_job_active_record', "~> 0.3.3" # newer was giving a strange MySQL error
+gem 'delayed_job'
+gem 'delayed_job_active_record'#, "~> 0.3.3" # newer was giving a strange MySQL error
 gem "daemons"
 # gem "delayed_job_web"
 
@@ -27,18 +28,22 @@ gem 'coffee-rails', '~> 3.2.1'
 gem 'uglifier', '>= 1.0.3'
 gem 'select2-rails'
 gem 'jquery-rails'
+gem 'ace-rails-ap'
 
 gem 'geokit-rails3'
 gem 'kramdown'
 gem "typhoeus"
 gem 'nokogiri'
 gem 'wunderground'
+gem 'forecast_io'
 gem 'rturk'
 
-gem "twitter"
-gem 'twitter-stream', '>=0.1.16'
+gem "twitter", '~> 5.7.1'
+gem 'twitter-stream', :git => 'https://github.com/cantino/twitter-stream', :branch => 'master'
 gem 'em-http-request'
 gem 'weibo_2'
+
+gem 'therubyracer'
 
 platforms :ruby_18 do
   gem 'system_timer'
@@ -47,6 +52,8 @@ end
 
 group :development do
   gem 'pry'
+  gem 'binding_of_caller'
+  gem 'better_errors'
 end
 
 group :development, :test do
@@ -55,5 +62,5 @@ group :development, :test do
   gem 'shoulda-matchers'
   gem 'rr'
   gem 'webmock', :require => false
-  gem 'rake'
+  gem 'coveralls', :require => false
 end
