@@ -5,7 +5,7 @@
 default_run_options[:pty] = true
 
 set :application, "huginn"
-set :deploy_to, "/home/you/app"
+set :deploy_to, ENV['OPENSHIFT_REPO_DIR'] + "/app"
 set :user, "you"
 set :use_sudo, false
 set :scm, :git
@@ -19,7 +19,7 @@ puts "    Deploying #{branch}"
 
 set :bundle_without, [:development]
 
-server "yourdomain.com", :app, :web, :db, :primary => true
+server ENV['OPENSHIFT_GEAR_DNS'], :app, :web, :db, :primary => true
 
 set :sync_backups, 3
 

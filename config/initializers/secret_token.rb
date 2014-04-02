@@ -5,6 +5,11 @@
 # Make sure the secret is at least 30 characters and all random,
 # no regular words or you'll be exposed to dictionary attacks.
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+
+# start with the configured secret token
+>>>>>>> 98fedc4c3a631a63ffd2b03d585ce6ae998caf2b
 Huginn::Application.config.secret_token = ENV['APP_SECRET_TOKEN']
 
 # ...but use the OpenShift secret generator if that's available
