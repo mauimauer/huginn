@@ -25,7 +25,6 @@ test:
   pool: <%= ENV['DATABASE_POOL'] || "5" %>
 
 production:
-<<<<<<< HEAD
   adapter: <%= ENV['DATABASE_ADAPTER'] || "mysql2" %>
   encoding: <%= ENV['DATABASE_ENCODING'] || "utf8" %>
   reconnect: <%= ENV['DATABASE_RECONNECT'] || "true" %>
@@ -36,16 +35,3 @@ production:
   host: <%= ENV['DATABASE_HOST'] || "" %>
   port: <%= ENV['DATABASE_PORT'] || "" %>
   socket: <%= ENV['DATABASE_SOCKET'] || ["/var/run/mysqld/mysqld.sock", "/opt/local/var/run/mysql5/mysqld.sock", "/tmp/mysql.sock"].find{ |path| File.exist? path } %>
-=======
-  adapter: mysql2
-  encoding: utf8
-  reconnect: false
-  database: <%=ENV['OPENSHIFT_APP_NAME']%>
-  pool: 5
-  host:     <%=ENV['OPENSHIFT_MYSQL_DB_HOST']%>
-  port:     <%=ENV['OPENSHIFT_MYSQL_DB_PORT']%>
-  username: <%=ENV['OPENSHIFT_MYSQL_DB_USERNAME']%>
-  password: <%=ENV['OPENSHIFT_MYSQL_DB_PASSWORD']%>
-  # socket:   <%=ENV['OPENSHIFT_MYSQL_DB_SOCKET']%>
-
->>>>>>> config files now using $OPENSHIFT_* env vars

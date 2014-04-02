@@ -1,8 +1,5 @@
 source 'https://rubygems.org'
 
-#This version needs to be hardcoded for OpenShift
-gem 'thor'
-
 gem 'rails'
 gem 'rake'
 gem 'mysql2'
