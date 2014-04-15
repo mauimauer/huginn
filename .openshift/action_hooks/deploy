@@ -44,5 +44,6 @@ source ${OPENSHIFT_REPO_DIR}/.env.openshift
 
 pushd ${OPENSHIFT_REPO_DIR} > /dev/null
 bundle exec rake db:migrate RAILS_ENV="production"
-bundle exec rake assets:precompile 
+bundle exec rake db:seed RAILS_ENV="production"
+#bundle exec rake assets:precompile 
 popd > /dev/null
