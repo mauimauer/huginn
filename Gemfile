@@ -32,7 +32,7 @@ gem 'ace-rails-ap'
 gem 'geokit-rails3'
 gem 'kramdown'
 gem "typhoeus"
-gem 'nokogiri' '~> 1.6.2'
+gem 'nokogiri', '1.6.2rc2'
 gem 'wunderground'
 gem 'forecast_io'
 gem 'rturk'
