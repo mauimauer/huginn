@@ -17,5 +17,5 @@
 # This is probably a terrible idea, but we'll leave this here just in case
 # we need to remember it later
 #
-#RAILS_ENV=production bundle exec rails runner bin/twitter_stream.rb &> $OPENSHIFT_REPO_DIR/log/twitter_stream.log
-#RAILS_ENV=production bundle exec rails runner bin/schedule.rb &> $OPENSHIFT_REPO_DIR/log/schedule.log
+RAILS_ENV=production bundle exec rails runner bin/twitter_stream.rb &> $OPENSHIFT_REPO_DIR/log/twitter_stream.log
+RAILS_ENV=production bundle exec rails runner bin/schedule.rb &> $OPENSHIFT_REPO_DIR/log/schedule.log
