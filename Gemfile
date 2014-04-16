@@ -36,6 +36,7 @@ gem 'kramdown'
 gem "typhoeus"
 gem 'nokogiri', '1.6.2rc2'
 gem 'wunderground'
+gem 'unicorn', '~> 4.8.2'
 gem 'forecast_io'
 gem 'rturk'
 

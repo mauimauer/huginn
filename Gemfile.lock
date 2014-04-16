@@ -8,6 +8,7 @@ GIT
       http_parser.rb (~> 0.6.0)
       simple_oauth (~> 0.2.0)
 
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -288,6 +289,7 @@ GEM
     uglifier (2.1.2)
       execjs (>= 0.3.0)
       multi_json (~> 1.0, >= 1.0.2)
+    unicorn (4.8.2)
     uuid (2.3.7)
       macaddr (~> 1.0)
     warden (1.2.3)
@@ -330,7 +332,10 @@ DEPENDENCIES
   jsonpath
   kaminari
   kramdown
+  minitest (= 4.3.2)
   mysql2
+  netrc
+  unicorn (~> 4.8.2)
   nokogiri (= 1.6.2rc2)
   pry
   rails
