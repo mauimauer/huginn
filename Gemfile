@@ -12,6 +12,8 @@ gem 'jsonpath'
 gem 'twilio-ruby'
 gem 'ruby-growl'
 gem 'netrc'
+gem 'kgio'
+gem 'raindrops'
 gem 'minitest', '4.3.2'
 
 gem 'delayed_job'
